@@ -1,0 +1,51 @@
+READ ME PLS
+Student: Hodoboc-Velescu Tudor
+Grupa: 335CC
+
+						Stabilire topologie
+Am stocat topologie intr-o matrice de 3 linii, fiecare linie avand un numar de
+coloane corespunzator numarul workerilor din acel cluster. De asemenea, am si
+un vector in care stochez numarul de wokeri al fiecarui cluster.
+
+Coordonatorii isi vor citi fiecare workerii si o sa ii stocheze in matrice la
+linia corespunzatoare(ex: clusters[0] - lista workerilor din cluster-ul 0).
+Dupa asta, fiecare coordonator va face schimb de clustere. Mai intai
+coordonatorul 0 le va trimite celorlalti cluster-ul lui, dupa care va astepta
+datele de la ceilalti doi, mai intai de la 1, apoi de la 2. In momentul in care
+un coordonator primeste datele de la ceilalti doi, afiseaza topologia ca in
+cerinta.
+
+In momentul in care toti coordonatorii au topologia completa, acestia o vor
+trimite si workerilor lor. Se trimit numarul de workeri pentru fiecare cluster,
+apoi, crescator, se trimit listele de workeri ale fiecarui cluster. Precum
+coordonatorii, in momentul in care workerii cunosc toata topologia, o vor afisa.
+
+						Realizarea calculelor
+Procesul 0 preia lungimea vectorului data ca argument si construieste vectorul.
+Dupa aceasta, stabileste dimensiunea de lucru aproximativa pentru fiecare worker.
+Deoarece este posibil ca lungimea sa nu se imparta exact la numarul de workeri,
+se face o aproximare prin adaos. Fiecare cluster va avea de manageriat un vector
+de lungime nWorkers * dimensiuneWorker, cu p posibila exceptie ultimul. Datorita
+aproximarii specificate anterior, pentru a ma asigura ca nu se trimit mai multe
+date decat trebuie, lungimea ultimului interval e posibil sa aibe o lungime mai
+mica, fiind calculat ca N - startIndex.
+
+Dupa stabilirea intervalelor de lucru, coordonatorul 0 va trimite datele catre
+ceilalti coordonatori, apoi fiecarui worker din cluster-ul propriu. Intre timp
+ceilalti coordonatori, dupa ce primesc datele de la 0, vor trimite la randul lor
+datele catre workerii lor. Se alege aceasta ordine pentru a se putea calcula mai
+multe date deodata si, astfel, scurta timpul de executie. Workerii primesc datele,
+fiecare isi face calculele, apoi trimite coordonatorului rezultatele.
+Coordonatorii primesc datele de la workerii lor si apoi le trimit catre 0,
+respectiv 0 asteapta primirea datelor de la ceilalti coordonatori. Procesul 0 va
+afisa rezultatele. La final se vor face dezalocarile de memorie necesare si
+programul se termina.
+
+			Tratarea defectelor pe canalul de comunicatie
+Pentru a rezolva problema de comunicatie, toate mesajele dintre coordonatorii 0
+si 1 se vor efectua prin intermediul coordonatorului 2. Astfel, se va verifica
+de fiecare data cand comunica cele doua procese, transmisiunea sa se faca prin
+2(de asemenea, trebuie modificat in coordonatorul 2 sa astepte/trimita
+respectivele mesaje la 0/1).
+
+Thanks for reading me! <(")
